@@ -78,7 +78,7 @@ export default function Hero() {
                 variants={badgeVariant(0.6)}
                 initial="hidden"
                 animate="visible"
-                className="absolute -top-[22%] left-[18%] glass rounded-2xl px-4 py-3 shadow-lg float-badge"
+                className="absolute -top-[28%] left-[18%] glass rounded-2xl px-4 py-3 shadow-lg float-badge"
               >
                 <div className="text-[22px] font-bold text-black leading-none">1,000 kg</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Max Payload</div>
@@ -89,7 +89,7 @@ export default function Hero() {
                 variants={badgeVariant(0.9)}
                 initial="hidden"
                 animate="visible"
-                className="absolute top-[18%] right-[4%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
+                className="absolute top-[10%] right-[4%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
               >
                 <div className="text-[22px] font-bold text-black leading-none">8h</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Battery Life</div>
