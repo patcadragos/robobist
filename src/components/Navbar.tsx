@@ -18,6 +18,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useState<'EN' | 'RO'>('EN')
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -53,29 +54,34 @@ export default function Navbar() {
             </Link>
 
             {/* Center nav */}
-            <LayoutGroup>
-              <div className="hidden lg:flex items-center gap-8">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`relative text-[15px] font-medium transition-colors duration-200 pb-1 ${
-                      pathname === link.href
-                        ? 'text-black'
-                        : 'text-[#545554] hover:text-black'
-                    }`}
-                  >
-                    {link.label}
-                    {pathname === link.href && (
-                      <motion.div
-                        layoutId="nav-indicator"
-                        initial={false}
-                        className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#F36D21]"
-                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                ))}
+            <LayoutGroup id="nav">
+              <div className="hidden lg:flex items-center gap-8" onMouseLeave={() => setHoveredLink(null)}>
+                {navLinks.map(link => {
+                  const isActive = pathname === link.href
+                  const showIndicator = hoveredLink ? hoveredLink === link.href : isActive
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onMouseEnter={() => setHoveredLink(link.href)}
+                      className={`relative text-[15px] font-medium transition-colors duration-200 pb-1 ${
+                        isActive || hoveredLink === link.href
+                          ? 'text-black'
+                          : 'text-[#545554]'
+                      }`}
+                    >
+                      {link.label}
+                      {showIndicator && (
+                        <motion.div
+                          layoutId="nav-indicator"
+                          initial={false}
+                          className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#F36D21]"
+                          transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                        />
+                      )}
+                    </Link>
+                  )
+                })}
               </div>
             </LayoutGroup>
 
