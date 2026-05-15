@@ -63,33 +63,33 @@ export default function Hero() {
 
           {/* Right: Robot image + badges */}
           <div className="md:w-[55%] flex items-center justify-center relative w-full">
-            <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full">
+            <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full max-w-[580px]">
               <Image
                 src="/ROBOBIST/RPT-HOMEVIEW.png"
                 alt="Robobist RPT-1000 autonomous pallet truck"
-                width={800}
-                height={680}
-                className="w-full h-auto object-contain drop-shadow-2xl scale-110"
+                width={580}
+                height={480}
+                className="w-full h-auto object-contain drop-shadow-2xl"
                 priority
               />
 
-              {/* Badge 1 — top left */}
+              {/* Badge 1 — top left near robot body */}
               <motion.div
                 variants={badgeVariant(0.6)}
                 initial="hidden"
                 animate="visible"
-                className="absolute top-[8%] left-[2%] glass rounded-2xl px-4 py-3 shadow-lg float-badge"
+                className="absolute top-[6%] left-[10%] glass rounded-2xl px-4 py-3 shadow-lg float-badge"
               >
                 <div className="text-[22px] font-bold text-black leading-none">1,000 kg</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Max Payload</div>
               </motion.div>
 
-              {/* Badge 2 — right middle */}
+              {/* Badge 2 — right middle near forks */}
               <motion.div
                 variants={badgeVariant(0.9)}
                 initial="hidden"
                 animate="visible"
-                className="absolute top-[42%] right-[0%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
+                className="absolute top-[38%] right-[5%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
               >
                 <div className="text-[22px] font-bold text-black leading-none">8h</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Battery Life</div>
@@ -100,7 +100,7 @@ export default function Hero() {
                 variants={badgeVariant(1.2)}
                 initial="hidden"
                 animate="visible"
-                className="absolute bottom-[12%] left-[4%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-3"
+                className="absolute bottom-[18%] left-[6%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-3"
               >
                 <div className="text-[22px] font-bold text-black leading-none">±10mm</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Accuracy</div>
