@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
@@ -19,6 +19,16 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useState<'EN' | 'RO'>('EN')
   const pathname = usePathname()
+  const navRef = useRef<HTMLDivElement>(null)
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null)
+
+  useEffect(() => {
+    const activeEl = linkRefs.current[pathname]
+    const nav = navRef.current
+    if (!activeEl || !nav) return
+    setIndicator({ left: activeEl.offsetLeft, width: activeEl.offsetWidth })
+  }, [pathname])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -53,31 +63,28 @@ export default function Navbar() {
             </Link>
 
             {/* Center nav */}
-            <LayoutGroup key={pathname} id="nav">
-              <div className="hidden lg:flex items-center gap-8">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`relative text-[15px] font-medium transition-colors duration-200 pb-1 ${
-                      pathname === link.href
-                        ? 'text-black'
-                        : 'text-[#545554] hover:text-black'
-                    }`}
-                  >
-                    {link.label}
-                    {pathname === link.href && (
-                      <motion.div
-                        layoutId="nav-indicator"
-                        initial={false}
-                        className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#F36D21]"
-                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                ))}
-              </div>
-            </LayoutGroup>
+            <div ref={navRef} className="relative hidden lg:flex items-center gap-8">
+              {navLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  ref={el => { linkRefs.current[link.href] = el }}
+                  className={`text-[15px] font-medium transition-colors duration-200 pb-1 ${
+                    pathname === link.href ? 'text-black' : 'text-[#545554] hover:text-black'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              {indicator && (
+                <motion.div
+                  className="absolute bottom-0 h-[2px] bg-[#F36D21] pointer-events-none"
+                  initial={false}
+                  animate={{ left: indicator.left, width: indicator.width }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+            </div>
 
             {/* Right: lang + CTA */}
             <div className="hidden lg:flex items-center gap-4">
