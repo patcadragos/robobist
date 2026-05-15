@@ -26,7 +26,7 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col-reverse md:flex-row items-center min-h-[calc(100vh-64px)] py-12 md:py-0 gap-8 md:gap-0">
           {/* Left: Text */}
-          <div className="flex-1 max-w-xl">
+          <div className="md:w-[45%] max-w-xl">
             <motion.div initial="hidden" animate="visible" className="space-y-6">
               <motion.p
                 variants={fadeUp(0)}
@@ -62,14 +62,14 @@ export default function Hero() {
           </div>
 
           {/* Right: Robot image + badges */}
-          <div className="flex-1 flex items-center justify-center relative w-full">
-            <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full max-w-[680px]">
+          <div className="md:w-[55%] flex items-center justify-center relative w-full">
+            <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full">
               <Image
                 src="/ROBOBIST/RPT-HOMEVIEW.png"
                 alt="Robobist RPT-1000 autonomous pallet truck"
-                width={680}
-                height={580}
-                className="w-full h-auto object-contain drop-shadow-2xl"
+                width={800}
+                height={680}
+                className="w-full h-auto object-contain drop-shadow-2xl scale-110"
                 priority
               />
 
