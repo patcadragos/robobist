@@ -58,13 +58,20 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-[15px] font-medium transition-colors duration-200 pb-0.5 ${
+                  className={`relative text-[15px] font-medium transition-colors duration-200 pb-1 ${
                     pathname === link.href
-                      ? 'text-black border-b-2 border-[#F36D21]'
+                      ? 'text-black'
                       : 'text-[#545554] hover:text-black'
                   }`}
                 >
                   {link.label}
+                  {pathname === link.href && (
+                    <motion.div
+                      layoutId="nav-indicator"
+                      className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#F36D21]"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
             </div>
