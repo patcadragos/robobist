@@ -159,6 +159,11 @@ h4 {
 .float-badge-2 { animation: float-anim 3s ease-in-out 0.3s infinite; }
 .float-badge-3 { animation: float-anim 3s ease-in-out 0.6s infinite; }
 
+/* Hide Google Translate toolbar */
+.skiptranslate { display: none !important; }
+iframe.skiptranslate { display: none !important; }
+body { top: 0 !important; }
+
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }

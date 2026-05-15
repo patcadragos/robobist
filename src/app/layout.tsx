@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -74,9 +75,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="font-inter antialiased">
+        <div id="google_translate_element" style={{ display: 'none' }} />
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <Script id="google-translate-init" strategy="afterInteractive">{`
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+              pageLanguage: 'en',
+              includedLanguages: 'ro,de,fr,it,es,pl,nl,pt,cs,hu,sv,da,fi,no',
+              autoDisplay: false
+            }, 'google_translate_element');
+          }
+        `}</Script>
+        <Script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" strategy="afterInteractive" />
       </body>
     </html>
   )
