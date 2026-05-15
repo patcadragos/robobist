@@ -62,13 +62,13 @@ export default function Hero() {
           </div>
 
           {/* Right: Robot image + badges */}
-          <div className="flex-1 flex items-center justify-center relative w-full md:max-w-[55%]">
-            <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full max-w-[560px]">
+          <div className="flex-1 flex items-center justify-center relative w-full">
+            <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full max-w-[680px]">
               <Image
                 src="/ROBOBIST/RPT-HOMEVIEW.png"
                 alt="Robobist RPT-1000 autonomous pallet truck"
-                width={560}
-                height={480}
+                width={680}
+                height={580}
                 className="w-full h-auto object-contain drop-shadow-2xl"
                 priority
               />
