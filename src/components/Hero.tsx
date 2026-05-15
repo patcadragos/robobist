@@ -89,7 +89,7 @@ export default function Hero() {
                 variants={badgeVariant(0.9)}
                 initial="hidden"
                 animate="visible"
-                className="absolute top-[30%] -right-[2%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
+                className="absolute top-[30%] right-[4%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
               >
                 <div className="text-[22px] font-bold text-black leading-none">8h</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Battery Life</div>
