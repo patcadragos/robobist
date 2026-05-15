@@ -65,10 +65,10 @@ export default function Hero() {
           <div className="md:w-[55%] flex items-center justify-center relative w-full">
             <motion.div variants={fadeLeft} initial="hidden" animate="visible" className="relative w-full max-w-[580px]">
               <Image
-                src="/ROBOBIST/RPT-HOMEVIEW.png"
+                src="/ROBOBIST/RPT-HOMEVIEW-cropped.png"
                 alt="Robobist RPT-1000 autonomous pallet truck"
-                width={580}
-                height={480}
+                width={600}
+                height={267}
                 className="w-full h-auto object-contain drop-shadow-2xl"
                 priority
               />
