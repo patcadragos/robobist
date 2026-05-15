@@ -60,19 +60,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const match = document.cookie.match(/googtrans=\/en\/([a-z]+)/)
-    if (match) {
-      setSelectedLang(match[1])
-      return
-    }
-    const browserLang = navigator.language.split('-')[0].toLowerCase()
-    const supported = LANGUAGES.find(l => l.code === browserLang)
-    if (supported && browserLang !== 'en') {
-      const exp = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()
-      document.cookie = `googtrans=/en/${browserLang}; expires=${exp}; path=/`
-      document.cookie = `googtrans=/en/${browserLang}; expires=${exp}; path=/; domain=.${location.hostname}`
-      setSelectedLang(browserLang)
-      location.reload()
-    }
+    if (match) setSelectedLang(match[1])
   }, [])
 
   useEffect(() => {
