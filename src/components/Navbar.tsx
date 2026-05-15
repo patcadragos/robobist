@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
@@ -53,28 +53,31 @@ export default function Navbar() {
             </Link>
 
             {/* Center nav */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`relative text-[15px] font-medium transition-colors duration-200 pb-1 ${
-                    pathname === link.href
-                      ? 'text-black'
-                      : 'text-[#545554] hover:text-black'
-                  }`}
-                >
-                  {link.label}
-                  {pathname === link.href && (
-                    <motion.div
-                      layoutId="nav-indicator"
-                      className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#F36D21]"
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              ))}
-            </div>
+            <LayoutGroup>
+              <div className="hidden lg:flex items-center gap-8">
+                {navLinks.map(link => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative text-[15px] font-medium transition-colors duration-200 pb-1 ${
+                      pathname === link.href
+                        ? 'text-black'
+                        : 'text-[#545554] hover:text-black'
+                    }`}
+                  >
+                    {link.label}
+                    {pathname === link.href && (
+                      <motion.div
+                        layoutId="nav-indicator"
+                        initial={false}
+                        className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-[#F36D21]"
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </LayoutGroup>
 
             {/* Right: lang + CTA */}
             <div className="hidden lg:flex items-center gap-4">
