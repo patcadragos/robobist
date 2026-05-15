@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   title: 'Robobist | Autonomous Pallet Robotics',
   description: 'The Robobist RPT-1000 handles 1,000 kg payloads with AI navigation — zero infrastructure changes required.',
   keywords: 'autonomous pallet truck, warehouse robotics, AMR, SLAM navigation, Robobist RPT-1000',
+  icons: [
+    { rel: 'icon', url: '/ROBOBIST/logo-negru.png', media: '(prefers-color-scheme: light)' },
+    { rel: 'icon', url: '/ROBOBIST/logo-alb.png', media: '(prefers-color-scheme: dark)' },
+  ],
   openGraph: {
     title: 'Robobist | Autonomous Pallet Robotics',
     description: 'The Robobist RPT-1000 handles 1,000 kg payloads with AI navigation — zero infrastructure changes required.',
