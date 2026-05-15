@@ -73,34 +73,34 @@ export default function Hero() {
                 priority
               />
 
-              {/* Badge 1 — top left near robot body */}
+              {/* Badge 1 — deasupra robotului */}
               <motion.div
                 variants={badgeVariant(0.6)}
                 initial="hidden"
                 animate="visible"
-                className="absolute top-[6%] left-[10%] glass rounded-2xl px-4 py-3 shadow-lg float-badge"
+                className="absolute -top-[14%] left-[18%] glass rounded-2xl px-4 py-3 shadow-lg float-badge"
               >
                 <div className="text-[22px] font-bold text-black leading-none">1,000 kg</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Max Payload</div>
               </motion.div>
 
-              {/* Badge 2 — right middle near forks */}
+              {/* Badge 2 — dreapta, in afara robotului */}
               <motion.div
                 variants={badgeVariant(0.9)}
                 initial="hidden"
                 animate="visible"
-                className="absolute top-[38%] right-[5%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
+                className="absolute top-[30%] -right-[2%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-2"
               >
                 <div className="text-[22px] font-bold text-black leading-none">8h</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Battery Life</div>
               </motion.div>
 
-              {/* Badge 3 — bottom left */}
+              {/* Badge 3 — sub robot, stanga */}
               <motion.div
                 variants={badgeVariant(1.2)}
                 initial="hidden"
                 animate="visible"
-                className="absolute bottom-[18%] left-[6%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-3"
+                className="absolute -bottom-[14%] left-[8%] glass rounded-2xl px-4 py-3 shadow-lg float-badge-3"
               >
                 <div className="text-[22px] font-bold text-black leading-none">±10mm</div>
                 <div className="text-[12px] text-[#545554] mt-0.5">Accuracy</div>
