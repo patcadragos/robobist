@@ -50,18 +50,51 @@ Typography is set globally in `globals.css` — `h1`–`h4` have predefined size
 ## Pricing Logic
 
 All pricing is calculated client-side in `src/lib/pricing.ts`. The `PRICING` object is the single source of truth for:
-- Base price range (€60k–€70k per unit)
+- Base robot price starts from **€40,000/unit** (the public hook price — displayed on ServicesSection, FAQ, product meta)
+- Fully configured unit (with all add-ons): **under €50,000** — this is what the configurator calculates
+- Additional services (WMS integration, automated doors, network infrastructure, installation) are **priced per project** — clients discuss these directly, no public price shown
 - Add-on prices (7 add-ons)
 - Volume discount tiers (3%, 6%, 8%, 10+ units)
 
 `calculatePrice(config)` returns `PriceResult` with min/max ranges. `ConfiguratorState` defines the full shape of configurator form data. The configurator page (`src/app/configurator/page.tsx`) is a 5-step multi-page form using `react-hook-form` + `zod`.
 
+## Branding & Positioning
+
+**Robobist is presented as an independent, standalone company.** Do not add text implying it is a reseller, distributor, or collaborator of any other brand.
+
+**Flacăra Electric** (same ownership group) handles physical installation. This is intentionally kept subtle — mention it only as "certified installation" or "our installation team", never as a named partner on prominent sections. It can appear in fine print or contact details if needed.
+
+**SEER / seer-group.com**: The Robobist P1000 is technically a rebrand of the SEER SPT-1000. This must **never appear on the site**. Product images are now served locally from `public/ROBOBIST/` (RPT-FRONTVIEW.png, RPT-SIDEVIEW.png, RPT-HOMEVIEW-cropped.png). Do not add any visible text referencing SEER, SPT-1000, or seer-group anywhere.
+
+## Home Page Structure
+
+Current section order in `src/app/page.tsx`:
+`Hero → StatsBar → Features → ProductShowcase → HowItWorks → ServicesSection → FaqSection → CTABanner`
+
+- **ServicesSection** (`src/components/ServicesSection.tsx`) — ecosystem upsell: robot as anchor (from €40k), plus WMS integration, automated doors, network infrastructure, installation, support. Ends with a black CTA card explaining final price depends on warehouse specifics.
+- **FaqSection** (`src/components/FaqSection.tsx`) — 8 FAQ accordion items with embedded FAQPage JSON-LD schema. Also exports `faqSchema` used as a `<script>` tag in `page.tsx`.
+- **PartnerSection** (`src/components/PartnerSection.tsx`) — exists in codebase but is **not rendered** anywhere. Do not re-add it without explicit instruction.
+
+## SEO
+
+JSON-LD schemas in place:
+- `Organization` — `src/app/layout.tsx` (global, with areaServed EU, knowsAbout, contactPoints)
+- `Product` + `BreadcrumbList` + `FAQPage` (product-specific) — `src/app/product/layout.tsx`
+- `FAQPage` (home page) — inline `<script>` in `src/app/page.tsx` via `faqSchema` export
+- `BreadcrumbList` — `src/app/about/layout.tsx`
+
+Site is still **noindex** — do not change `robots` in `src/app/layout.tsx` or `public/robots.txt` until explicitly instructed.
+
 ## Key Patterns
 
 **Navbar active indicator**: Uses `useRef` + `offsetLeft`/`offsetWidth` (not `getBoundingClientRect`) to position the sliding orange underline. This avoids scroll-position bugs that occur with framer-motion `layoutId` layout animations.
 
-**Images**: Hero uses `/ROBOBIST/RPT-HOMEVIEW-cropped.png` (auto-trimmed version of the original). Product page images are loaded from Seer's CDN (`cdn1.seer-group.com`). All images go through `next/image`.
+**Images**: All images are local in `public/ROBOBIST/`. Hero uses `RPT-HOMEVIEW-cropped.png`. Product gallery: `RPT-HOMEVIEW-cropped.png`, `RPT-FRONTVIEW.png`, `RPT-SIDEVIEW.png`. All served via `next/image`.
 
 **Favicons**: Adaptive — `favicon-negru.png` for light mode, `favicon-alb.png` for dark mode, both in `public/ROBOBIST/`.
 
-**Product**: The RPT-1000 is a rebrand of the SEER SPT-1000 — specs are identical. The product page (`src/app/product/page.tsx`) is fully static with hardcoded spec tables.
+**Product**: The Robobist P1000 is internally a rebrand of the SEER SPT-1000 — specs are identical. This fact must not appear anywhere on the public site. The product page (`src/app/[locale]/product/page.tsx`) is fully static with hardcoded spec tables. Product naming follows the **P-Series** convention: P = Pallet truck, number = payload in kg (e.g. P1000 = pallet truck, 1000 kg). Future forklifts will use a different letter prefix.
+
+## Translations
+
+All UI text is in `src/lib/translations/` — one file per language (en, ro, de, fr, it, es, pl, nl, pt, cs, hu, sv, da, fi, no). Always update all 14 non-English files when changing visible text, unless explicitly told to do only one language. The `useT()` hook from `src/contexts/LanguageContext.tsx` provides translations in client components.

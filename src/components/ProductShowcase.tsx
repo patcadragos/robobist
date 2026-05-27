@@ -1,51 +1,21 @@
-'use client'
+﻿'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { motion } from 'framer-motion'
+import { useT, useLanguage } from '@/contexts/LanguageContext'
+import { Monitor, ScanLine, Package, ShieldCheck } from 'lucide-react'
 
-const hotspots = [
-  {
-    id: 1,
-    x: '22%',
-    y: '18%',
-    label: 'HMI Control Panel',
-    desc: '7" touchscreen + emergency stop',
-  },
-  {
-    id: 2,
-    x: '72%',
-    y: '15%',
-    label: '360° Lidar Array',
-    desc: '5 sensors, ±10mm accuracy',
-  },
-  {
-    id: 3,
-    x: '48%',
-    y: '78%',
-    label: 'Heavy-Duty Forks',
-    desc: '1,220mm length, 1,000kg rated',
-  },
-  {
-    id: 4,
-    x: '78%',
-    y: '50%',
-    label: 'Perimeter Safety',
-    desc: 'Auto-stop on obstacle detection',
-  },
-]
+const icons = [Monitor, ScanLine, Package, ShieldCheck]
 
 export default function ProductShowcase() {
-  const [activeHotspot, setActiveHotspot] = useState<number | null>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start end', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], ['-5%', '5%'])
+  const t = useT()
+  const { locale } = useLanguage()
 
   return (
-    <section ref={containerRef} className="gradient-dark grain py-[120px] relative overflow-hidden">
+    <section className="gradient-dark grain py-[120px] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -54,80 +24,66 @@ export default function ProductShowcase() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-white/50 mb-3">The Robot</p>
-          <h2 className="text-white">RPT-1000. Every detail engineered.</h2>
+          <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-white/50 mb-3">{t.showcase.tag}</p>
+          <h2 className="text-white">{t.showcase.h2}</h2>
         </motion.div>
 
-        {/* Robot image + hotspots */}
-        <div className="flex justify-center">
-          <motion.div style={{ y }} className="relative max-w-[700px] w-full">
+        {/* Robot image with ambient glow */}
+        <div className="flex justify-center mb-16">
+          <div className="relative max-w-[560px] w-full">
+            {/* Ambient glow */}
+            <div className="absolute inset-0 -inset-x-16 bg-[#F36D21]/10 rounded-full blur-[100px] pointer-events-none" />
             <Image
-              src="https://cdn1.seer-group.com/static/products/SPT-1000/2.png"
-              alt="Robobist RPT-1000 detail view"
-              width={700}
-              height={560}
-              className="w-full h-auto object-contain drop-shadow-2xl"
+              src="/ROBOBIST/RPT-FRONTVIEW.png"
+              alt="Robobist P1000 front view"
+              width={2850}
+              height={2442}
+              className="w-full h-auto object-contain drop-shadow-2xl relative z-10"
             />
+          </div>
+        </div>
 
-            {/* Hotspots */}
-            {hotspots.map(h => (
+        {/* Feature cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {t.showcase.hotspots.map((spot, i) => {
+            const Icon = icons[i]
+            return (
               <div
-                key={h.id}
-                style={{ left: h.x, top: h.y }}
-                className="absolute"
-                onMouseEnter={() => setActiveHotspot(h.id)}
-                onMouseLeave={() => setActiveHotspot(null)}
+                key={i}
+                className="relative rounded-2xl p-6 border border-white/[0.08] bg-white/[0.04] overflow-hidden group [@media(hover:hover)]:hover:border-[#F36D21]/40 [@media(hover:hover)]:hover:bg-white/[0.06] transition-all duration-300"
               >
-                {/* Pulse ring */}
-                <span
-                  className="absolute inset-[-6px] rounded-full border-2 border-[#F36D21] hotspot-ring"
-                  style={{ opacity: 0.5 }}
-                />
-                {/* Dot */}
-                <button
-                  className="relative w-4 h-4 bg-[#F36D21] rounded-full cursor-pointer z-10"
-                  aria-label={h.label}
-                />
+                {/* Top orange accent line */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#F36D21] to-transparent" />
 
-                {/* Tooltip */}
-                {activeHotspot === h.id && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 4 }}
-                    transition={{ duration: 0.2 }}
-                    className="glass-dark rounded-xl px-4 py-3 absolute z-20 w-52 shadow-2xl"
-                    style={{
-                      bottom: '130%',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                    }}
-                  >
-                    <div className="text-[13px] font-semibold text-white mb-1">{h.label}</div>
-                    <div className="text-[12px] text-white/70">{h.desc}</div>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/60" />
-                  </motion.div>
-                )}
+                {/* Icon */}
+                <div className="w-11 h-11 rounded-xl bg-[#F36D21]/15 flex items-center justify-center mb-5">
+                  <Icon size={20} className="text-[#F36D21]" />
+                </div>
+
+                {/* Text */}
+                <h4 className="text-white text-[15px] font-semibold mb-1.5 leading-snug">{spot.label}</h4>
+                <p className="text-[13px] text-white/50 leading-relaxed">{spot.desc}</p>
               </div>
-            ))}
-          </motion.div>
+            )
+          })}
         </div>
 
         {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex justify-center mt-12"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex justify-center"
         >
           <Link
-            href="/product"
-            className="border border-white text-white px-8 h-12 rounded-xl inline-flex items-center text-[15px] font-medium hover:bg-white hover:text-black transition-all duration-200"
+            href={`/${locale}/product`}
+            className="border border-white/30 text-white px-8 h-12 rounded-xl inline-flex items-center text-[15px] font-medium hover:bg-white hover:text-black transition-all duration-200 hover:border-white"
           >
-            View Full Specifications
+            {t.showcase.cta}
           </Link>
         </motion.div>
+
       </div>
     </section>
   )

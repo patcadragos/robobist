@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Configurator — Build Your Warehouse Robot Solution',
-  description: 'Configure your Robobist RPT-1000 autonomous pallet truck and get an instant price estimate. Customize units, battery, navigation options, and more.',
+  description: 'Configure your Robobist P1000 autonomous pallet truck and get an instant price estimate. Customize units, battery, navigation options, and more.',
   keywords: [
     'warehouse robot configurator', 'autonomous pallet truck price', 'AMR quote calculator',
-    'configure warehouse robot', 'RPT-1000 pricing', 'warehouse automation cost',
+    'configure warehouse robot', 'Robobist P1000 pricing', 'warehouse automation cost',
   ],
   alternates: { canonical: 'https://robobist.com/configurator' },
   openGraph: {

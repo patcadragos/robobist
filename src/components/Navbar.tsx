@@ -6,49 +6,39 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Globe, ChevronDown } from 'lucide-react'
-
-const navLinks = [
-  { href: '/product', label: 'Product' },
-  { href: '/configurator', label: 'Configurator' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-]
-
-const LANGUAGES = [
-  { code: 'en', label: 'EN', name: 'English' },
-  { code: 'ro', label: 'RO', name: 'Română' },
-  { code: 'de', label: 'DE', name: 'Deutsch' },
-  { code: 'fr', label: 'FR', name: 'Français' },
-  { code: 'it', label: 'IT', name: 'Italiano' },
-  { code: 'es', label: 'ES', name: 'Español' },
-  { code: 'pl', label: 'PL', name: 'Polski' },
-  { code: 'nl', label: 'NL', name: 'Nederlands' },
-  { code: 'pt', label: 'PT', name: 'Português' },
-  { code: 'cs', label: 'CS', name: 'Čeština' },
-  { code: 'hu', label: 'HU', name: 'Magyar' },
-  { code: 'sv', label: 'SV', name: 'Svenska' },
-  { code: 'da', label: 'DA', name: 'Dansk' },
-  { code: 'fi', label: 'FI', name: 'Suomi' },
-  { code: 'no', label: 'NO', name: 'Norsk' },
-]
+import { useLanguage, useT } from '@/contexts/LanguageContext'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [selectedLang, setSelectedLang] = useState('en')
   const [langOpen, setLangOpen] = useState(false)
+  const [mobileLangOpen, setMobileLangOpen] = useState(false)
   const pathname = usePathname()
   const navRef = useRef<HTMLDivElement>(null)
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
   const langRef = useRef<HTMLDivElement>(null)
+  const mobileLangRef = useRef<HTMLDivElement>(null)
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null)
 
+  const { locale, setLocale, languages } = useLanguage()
+  const t = useT()
+
+  const navLinks = [
+    { path: '/product', labelKey: 'product' as const },
+    { path: '/configurator', labelKey: 'configurator' as const },
+    { path: '/about', labelKey: 'about' as const },
+    { path: '/contact', labelKey: 'contact' as const },
+  ]
+
   useEffect(() => {
-    const activeEl = linkRefs.current[pathname]
+    const activeEl = linkRefs.current[pathname] ?? null
     const nav = navRef.current
-    if (!activeEl || !nav) return
+    if (!activeEl || !nav) {
+      setIndicator(null)
+      return
+    }
     setIndicator({ left: activeEl.offsetLeft, width: activeEl.offsetWidth })
-  }, [pathname])
+  }, [pathname, locale])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -59,35 +49,19 @@ export default function Navbar() {
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
   useEffect(() => {
-    const match = document.cookie.match(/googtrans=\/en\/([a-z]+)/)
-    if (match) setSelectedLang(match[1])
-  }, [])
-
-  useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
         setLangOpen(false)
+      }
+      if (mobileLangRef.current && !mobileLangRef.current.contains(e.target as Node)) {
+        setMobileLangOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
-  const changeLanguage = (code: string) => {
-    setSelectedLang(code)
-    setLangOpen(false)
-    const exp = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()
-    if (code === 'en') {
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${location.hostname}`
-    } else {
-      document.cookie = `googtrans=/en/${code}; expires=${exp}; path=/`
-      document.cookie = `googtrans=/en/${code}; expires=${exp}; path=/; domain=.${location.hostname}`
-    }
-    location.reload()
-  }
-
-  const currentLang = LANGUAGES.find(l => l.code === selectedLang) ?? LANGUAGES[0]
+  const currentLang = languages.find(l => l.code === locale) ?? languages[0]
 
   return (
     <>
@@ -102,7 +76,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-18">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+            <Link href={`/${locale}`} className="flex items-center gap-2 flex-shrink-0">
               <Image
                 src="/ROBOBIST/logo-negru.png"
                 alt="Robobist"
@@ -115,18 +89,21 @@ export default function Navbar() {
 
             {/* Center nav */}
             <div ref={navRef} className="relative hidden lg:flex items-center gap-8">
-              {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  ref={el => { linkRefs.current[link.href] = el }}
-                  className={`text-[15px] font-medium transition-colors duration-200 pb-1 ${
-                    pathname === link.href ? 'text-black' : 'text-[#545554] hover:text-black'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map(link => {
+                const href = `/${locale}${link.path}`
+                return (
+                  <Link
+                    key={link.path}
+                    href={href}
+                    ref={el => { linkRefs.current[href] = el }}
+                    className={`text-[15px] font-medium transition-colors duration-200 pb-1 ${
+                      pathname === href ? 'text-black' : 'text-[#545554] hover:text-black'
+                    }`}
+                  >
+                    {t.nav[link.labelKey]}
+                  </Link>
+                )
+              })}
               {indicator && (
                 <motion.div
                   className="absolute bottom-0 h-[2px] bg-[#F36D21] pointer-events-none"
@@ -158,12 +135,12 @@ export default function Navbar() {
                       transition={{ duration: 0.15 }}
                       className="absolute right-0 top-full mt-1 bg-white border border-[#E8E8E8] rounded-xl shadow-lg py-1 min-w-[160px] z-50 max-h-[360px] overflow-y-auto"
                     >
-                      {LANGUAGES.map(lang => (
+                      {languages.map(lang => (
                         <button
                           key={lang.code}
-                          onClick={() => changeLanguage(lang.code)}
+                          onClick={() => { setLocale(lang.code); setLangOpen(false) }}
                           className={`w-full text-left px-4 py-2 text-[13px] hover:bg-[#F5F5F5] transition-colors flex items-center justify-between ${
-                            selectedLang === lang.code ? 'text-[#F36D21] font-medium' : 'text-[#545554]'
+                            locale === lang.code ? 'text-[#F36D21] font-medium' : 'text-[#545554]'
                           }`}
                         >
                           <span>{lang.name}</span>
@@ -176,21 +153,57 @@ export default function Navbar() {
               </div>
 
               <Link
-                href="/configurator"
+                href={`/${locale}/configurator`}
                 className="bg-[#F36D21] text-white text-[14px] font-600 px-5 h-10 flex items-center rounded-lg hover:bg-[#e55e12] transition-all duration-200 hover:scale-[1.02]"
               >
-                Get a Quote
+                {t.nav.cta}
               </Link>
             </div>
 
-            {/* Mobile hamburger */}
-            <button
-              className="lg:hidden p-2 rounded-lg hover:bg-black/5 transition-colors"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+            {/* Mobile: lang + hamburger */}
+            <div className="lg:hidden flex items-center gap-1">
+              <div ref={mobileLangRef} className="relative">
+                <button
+                  onClick={() => setMobileLangOpen(!mobileLangOpen)}
+                  className="flex items-center gap-1 text-[13px] font-medium text-[#545554] px-2 py-2 rounded-lg hover:bg-black/5 transition-colors"
+                >
+                  <Globe size={15} />
+                  <span>{currentLang.label}</span>
+                  <ChevronDown size={11} className={`transition-transform duration-200 ${mobileLangOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {mobileLangOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-1 bg-white border border-[#E8E8E8] rounded-xl shadow-lg py-1 min-w-[180px] z-50 max-h-[320px] overflow-y-auto"
+                    >
+                      {languages.map(lang => (
+                        <button
+                          key={lang.code}
+                          onClick={() => { setLocale(lang.code); setMobileLangOpen(false) }}
+                          className={`w-full text-left px-4 py-2.5 text-[13px] hover:bg-[#F5F5F5] transition-colors flex items-center justify-between ${
+                            locale === lang.code ? 'text-[#F36D21] font-medium' : 'text-[#545554]'
+                          }`}
+                        >
+                          <span>{lang.name}</span>
+                          <span className="text-[11px] text-[#999] ml-3">{lang.label}</span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <button
+                className="p-2 rounded-lg hover:bg-black/5 transition-colors"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Toggle menu"
+              >
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>
@@ -220,35 +233,38 @@ export default function Navbar() {
                 </button>
               </div>
               <nav className="flex-1 p-5 flex flex-col gap-1">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`py-3 px-4 rounded-lg text-[16px] font-medium transition-colors ${
-                      pathname === link.href
-                        ? 'bg-[#F36D21]/10 text-[#F36D21]'
-                        : 'text-[#545554] hover:bg-gray-50 hover:text-black'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {navLinks.map(link => {
+                  const href = `/${locale}${link.path}`
+                  return (
+                    <Link
+                      key={link.path}
+                      href={href}
+                      className={`py-3 px-4 rounded-lg text-[16px] font-medium transition-colors ${
+                        pathname === href
+                          ? 'bg-[#F36D21]/10 text-[#F36D21]'
+                          : 'text-[#545554] hover:bg-gray-50 hover:text-black'
+                      }`}
+                    >
+                      {t.nav[link.labelKey]}
+                    </Link>
+                  )
+                })}
               </nav>
               <div className="p-5 border-t border-[#E8E8E8] flex flex-col gap-3">
                 <select
-                  value={selectedLang}
-                  onChange={e => changeLanguage(e.target.value)}
+                  value={locale}
+                  onChange={e => setLocale(e.target.value as typeof locale)}
                   className="w-full h-10 border border-[#E8E8E8] rounded-lg px-3 text-[13px] text-[#545554] bg-white focus:outline-none focus:border-[#F36D21]"
                 >
-                  {LANGUAGES.map(lang => (
+                  {languages.map(lang => (
                     <option key={lang.code} value={lang.code}>{lang.name} ({lang.label})</option>
                   ))}
                 </select>
                 <Link
-                  href="/configurator"
+                  href={`/${locale}/configurator`}
                   className="bg-[#F36D21] text-white text-[15px] font-semibold py-3 rounded-lg text-center hover:bg-[#e55e12] transition-colors"
                 >
-                  Get a Quote
+                  {t.nav.cta}
                 </Link>
               </div>
             </motion.div>

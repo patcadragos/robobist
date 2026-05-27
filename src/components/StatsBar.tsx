@@ -2,18 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
-
-const stats = [
-  { value: 1000, suffix: ' kg', label: 'Max Payload', prefix: '' },
-  { value: 1.1, suffix: ' m/s', label: 'Travel Speed', prefix: '' },
-  { value: 8, suffix: ' h', label: 'Battery Life', prefix: '' },
-  { value: 10, suffix: 'mm', label: 'Positioning', prefix: '±' },
-]
+import { useT } from '@/contexts/LanguageContext'
 
 function CountUp({ target, suffix, prefix }: { target: number; suffix: string; prefix: string }) {
   const [display, setDisplay] = useState(0)
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const inView = useInView(ref, { once: true, margin: '-10px' })
   const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -39,10 +33,19 @@ function CountUp({ target, suffix, prefix }: { target: number; suffix: string; p
 }
 
 export default function StatsBar() {
+  const t = useT()
+
+  const stats = [
+    { value: 1000, suffix: ' kg', label: t.stats.payload, prefix: '' },
+    { value: 1.1, suffix: ' m/s', label: t.stats.speed, prefix: '' },
+    { value: 8, suffix: ' h', label: t.stats.battery, prefix: '' },
+    { value: 10, suffix: 'mm', label: t.stats.positioning, prefix: '±' },
+  ]
+
   return (
-    <section className="gradient-dark grain py-16">
+    <section className="gradient-dark grain py-8 md:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+        <div className="grid grid-cols-4 gap-0">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -50,14 +53,14 @@ export default function StatsBar() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`flex flex-col items-center py-8 px-4 ${
-                i < stats.length - 1 ? 'md:border-r border-[#333]' : ''
-              } ${i === 1 ? 'border-r border-[#333] md:border-0' : ''}`}
+              className={`flex flex-col items-center py-6 md:py-8 px-2 md:px-4 ${
+                i < stats.length - 1 ? 'border-r border-[#333]' : ''
+              }`}
             >
-              <div className="text-[clamp(40px,5vw,56px)] font-bold text-white leading-none tracking-tight mb-2">
+              <div className="text-[clamp(18px,4vw,56px)] font-bold text-white leading-none tracking-tight mb-1 md:mb-2 whitespace-nowrap">
                 <CountUp target={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
               </div>
-              <div className="text-[14px] text-[#888]">{stat.label}</div>
+              <div className="text-[12px] md:text-[14px] text-[#888] whitespace-nowrap">{stat.label}</div>
             </motion.div>
           ))}
         </div>

@@ -1,15 +1,15 @@
-export const PRICING = {
-  base_min: 60_000,
-  base_max: 70_000,
+﻿export const PRICING = {
+  base_min: 40_000,
+  base_max: 44_000,
 
   addons: {
-    custom_fork_width:     { min: 1_500, max: 2_000 },
-    co_branding:           { min: 800,   max: 1_200 },
-    obstacle_avoidance_3d: { min: 3_800, max: 4_500 },
-    pallet_recognition_ai: { min: 4_500, max: 5_500 },
-    auto_charging_station: { min: 6_500, max: 7_500 },
-    extended_warranty_3y:  { min: 3_200, max: 3_800 },
-    cold_storage_kit:      { min: 2_000, max: 3_000 },
+    custom_fork_width:     { min: 400,   max: 600   },
+    co_branding:           { min: 200,   max: 350   },
+    obstacle_avoidance_3d: { min: 700,   max: 1_000 },
+    pallet_recognition_ai: { min: 900,   max: 1_200 },
+    auto_charging_station: { min: 1_200, max: 1_600 },
+    extended_warranty_3y:  { min: 500,   max: 700   },
+    cold_storage_kit:      { min: 350,   max: 500   },
   },
 
   volume_discounts: [
@@ -65,7 +65,7 @@ export function calculatePrice(config: Partial<ConfiguratorState>): PriceResult 
   let unit_min = PRICING.base_min
   let unit_max = PRICING.base_max
   const breakdown: { label: string; min: number; max: number }[] = [
-    { label: 'Base RPT-1000', min: unit_min, max: unit_max },
+    { label: 'Base Robobist P1000', min: unit_min, max: unit_max },
   ]
 
   if (config.custom_fork) {
