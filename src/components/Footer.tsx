@@ -4,6 +4,24 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useT, useLanguage } from '@/contexts/LanguageContext'
 
+function LinkedInIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+      <rect x="2" y="9" width="4" height="12"/>
+      <circle cx="4" cy="4" r="2"/>
+    </svg>
+  )
+}
+
+function YouTubeIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#000"/>
+    </svg>
+  )
+}
 
 export default function Footer() {
   const t = useT()
@@ -46,6 +64,16 @@ export default function Footer() {
             <h4 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#888] mb-4">{t.footer.companyHeader}</h4>
             <ul className="space-y-3">
               <li><Link href={`/${locale}/about`} className="text-[14px] text-[#888] hover:text-white transition-colors">{t.footer.aboutUs}</Link></li>
+              <li>
+                <a
+                  href="https://flacara-electric.ro/en/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[14px] text-[#888] hover:text-white transition-colors"
+                >
+                  Partner — Flacăra Electric
+                </a>
+              </li>
               <li><Link href={`/${locale}/careers`} className="text-[14px] text-[#888] hover:text-white transition-colors">{t.footer.careers}</Link></li>
             </ul>
           </div>
@@ -60,6 +88,16 @@ export default function Footer() {
                 </a>
               </li>
               <li className="text-[14px] text-[#888]">{t.footer.location}</li>
+              <li>
+                <a
+                  href="https://flacara-electric.ro/en/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[14px] text-[#888] hover:text-[#F36D21] transition-colors"
+                >
+                  flacara-electric.ro
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -75,6 +113,7 @@ export default function Footer() {
               <Link href={`/${locale}/terms`} className="hover:text-white transition-colors">{t.footer.terms}</Link>
             </div>
           </div>
+          <span>{t.footer.partnership}</span>
         </div>
       </div>
     </footer>
