@@ -103,7 +103,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-[20px] font-semibold text-black mb-3">8. Third-Party Links</h2>
             <p>
-              This Website may contain links to third-party websites (including our installation partner Flacăra Electric). These links are provided for convenience only. We have no control over, and assume no responsibility for, the content or practices of any third-party websites. Accessing linked sites is at your own risk.
+              This Website may contain links to third-party websites. These links are provided for convenience only. We have no control over, and assume no responsibility for, the content or practices of any third-party websites. Accessing linked sites is at your own risk.
             </p>
           </section>
 
