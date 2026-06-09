@@ -3,8 +3,11 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
+import { useT } from '@/contexts/LanguageContext'
 
 export default function PartnerSection() {
+  const t = useT()
+
   return (
     <section className="bg-white grain py-[120px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,11 +19,10 @@ export default function PartnerSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#F36D21] mb-4">Strategic Partner</p>
-            <h2 className="mb-6">Backed by Flacăra Electric.</h2>
+            <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#F36D21] mb-4">{t.partner.tag}</p>
+            <h2 className="mb-6">{t.partner.h2}</h2>
             <p className="text-[17px] text-[#545554] leading-[1.65] mb-8 max-w-[520px]">
-              Robobist operates in close collaboration with Flacăra Electric — Romania&apos;s leading electrical engineering firm.
-              Together we deliver end-to-end warehouse automation across Europe: from integration to ongoing maintenance.
+              {t.partner.body}
             </p>
             <a
               href="https://flacara-electric.ro/en/"
@@ -28,7 +30,7 @@ export default function PartnerSection() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[15px] font-medium text-[#F36D21] hover:underline underline-offset-4"
             >
-              Visit flacara-electric.ro
+              {t.partner.link}
               <ExternalLink size={14} />
             </a>
           </motion.div>

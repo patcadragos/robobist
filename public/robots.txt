@@ -1,2 +1,5 @@
 User-agent: *
+Allow: /sitemap.xml
 Disallow: /
+
+Sitemap: https://robobist.com/sitemap.xml

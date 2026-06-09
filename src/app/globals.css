@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -28,6 +29,82 @@ body {
   background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Cross-browser range slider */
+input[type="range"].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+input[type="range"].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F36D21;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+input[type="range"].slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F36D21;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+input[type="range"].slider::-moz-range-track {
+  background: #E8E8E8;
+  height: 4px;
+  border-radius: 2px;
+}
+input[type="range"].slider::-moz-range-progress {
+  background: #F36D21;
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* Cross-browser checkbox */
+input[type="checkbox"].cb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  border: 2px solid #E8E8E8;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+}
+input[type="checkbox"].cb:checked {
+  background: #F36D21;
+  border-color: #F36D21;
+}
+input[type="checkbox"].cb:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 4px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+input[type="checkbox"].cb:focus-visible {
+  outline: 2px solid #F36D21;
+  outline-offset: 2px;
 }
 
 /* Typography */
@@ -155,9 +232,10 @@ h4 {
   50% { transform: translateY(-8px); }
 }
 
-.float-badge { animation: float-anim 3s ease-in-out infinite; }
-.float-badge-2 { animation: float-anim 3s ease-in-out 0.3s infinite; }
-.float-badge-3 { animation: float-anim 3s ease-in-out 0.6s infinite; }
+.float-badge { animation: float-anim 3s ease-in-out infinite; will-change: transform; -webkit-transform: translateZ(0); transform: translateZ(0); }
+.float-badge-2 { animation: float-anim 3s ease-in-out 0.3s infinite; will-change: transform; -webkit-transform: translateZ(0); transform: translateZ(0); }
+.float-badge-3 { animation: float-anim 3s ease-in-out 0.6s infinite; will-change: transform; -webkit-transform: translateZ(0); transform: translateZ(0); }
+
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
